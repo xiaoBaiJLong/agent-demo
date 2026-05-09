@@ -2,14 +2,13 @@
 from fastapi import FastAPI, HTTPException
 from config import load_settings
 from llm_client import LLMClient
-from schemas import ChatRequest, ChatResponse, ChatJsonRequest, RagAskRequest, RagAskResponse, RagJsonAnswer
+from schemas import ChatRequest, ChatResponse, ChatJsonRequest, RagJsonAnswer
 from services.chat_service import ChatService
 from utils.errors import AppError
 from fastapi import Request
 from utils.trace import generate_trace_id
 from schemas import ErrorResponse
 from fastapi.responses import JSONResponse
-from services.rag_service import RagService
 
 app = FastAPI(
     title="Mini LLM Service",
@@ -57,10 +56,7 @@ def chat_json(request: ChatJsonRequest):
 @app.post("/rag/ask", response_model=RagAskResponse)
 def rag_ask(request_body: RagAskRequest, request: Request):
     trace_id = request.state.trace_id
-    try:
-        return rag_service.ask(request_body)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    return rag_service.ask(request_body, trace_id=trace_id)
     
 
 @app.exception_handler(AppError)

@@ -58,7 +58,7 @@ def chat_json(request: ChatJsonRequest):
 def rag_ask(request_body: RagAskRequest, request: Request):
     trace_id = request.state.trace_id
     try:
-        return rag_service.ask(request_body)
+        return rag_service.ask(request_body, trace_id)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     

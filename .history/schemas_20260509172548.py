@@ -13,8 +13,7 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     answer: str = Field(..., description="模型回答")
     model: str = Field(..., description="使用的模型")
-    trace_id: Optional[str] = Field(default=None, description="链路追踪ID")
-    raw_response: Optional[dict] = Field(default=None, description="模型原始响应")
+    trace_id: str = Field(..., description="链路追踪ID")
     
 class RagAskRequest(BaseModel):
     question: str = Field(..., description="用户问题")

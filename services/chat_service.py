@@ -2,13 +2,13 @@
 from llm_client import LLMClient
 from schemas import ChatRequest, ChatResponse, ChatJsonRequest, RagJsonAnswer
 from utils.trace import generate_trace_id
-from prompt_templates import build_rag_qa_prompt
 from prompt_manager import PromptManager
 
 
 class ChatService:
     def __init__(self, llm_client: LLMClient):
         self.llm_client = llm_client
+        self.prompt_manager = PromptManager()
 
     def chat(self, request: ChatRequest) -> ChatResponse:
         trace_id = generate_trace_id()
@@ -29,7 +29,7 @@ class ChatService:
     def chat_json(self, request: ChatJsonRequest) -> RagJsonAnswer:
         context_text = request.context or "无"
 
-        prompt = PromptManager.render(
+        prompt = self.prompt_manager.render(
             prompt_id="rag_qa",
             version="v1",
             variables={

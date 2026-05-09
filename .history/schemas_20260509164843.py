@@ -13,33 +13,7 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     answer: str = Field(..., description="模型回答")
     model: str = Field(..., description="使用的模型")
-    trace_id: Optional[str] = Field(default=None, description="链路追踪ID")
-    raw_response: Optional[dict] = Field(default=None, description="模型原始响应")
-    
-class RagAskRequest(BaseModel):
-    question: str = Field(..., description="用户问题")
-    top_k: int = Field(default=3, ge=1, le=10, description="检索返回数量")
-
-
-class RetrievedChunk(BaseModel):
-    chunk_id: str
-    doc_id: str
-    text: str
-    score: float
-
-
-class RagAskResponse(BaseModel):
-    answer: str
-    citations: List[str] = Field(default_factory=list)
-    confidence: float = Field(..., ge=0, le=1)
-    retrieved_chunks: List[RetrievedChunk] = Field(default_factory=list)
-    trace_id: str
-
-
-class RagAnswer(BaseModel):
-    answer: str = Field(..., description="最终答案")
-    citations: List[str] = Field(default_factory=list, description="引用来源")
-    confidence: float = Field(..., ge=0, le=1, description="置信度")
+    trace_id: str = Field(..., description="链路追踪ID")
 
 
 class RagJsonAnswer(BaseModel):
